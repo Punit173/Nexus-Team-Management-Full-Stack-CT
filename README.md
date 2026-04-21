@@ -22,7 +22,7 @@ If you are cloning or downloading this repository for the first time, follow the
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
+   git clone [<repository-url>](https://github.com/Punit173/Nexus-Team-Management-Full-Stack-CT.git)
    cd mgmt-application
    ```
 
