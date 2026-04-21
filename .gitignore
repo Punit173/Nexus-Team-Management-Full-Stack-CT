@@ -1,23 +1,45 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Dependency directories
+node_modules/
+jspm_packages/
+.npm
+.eslintcache
 
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
+# dotenv environment variable files
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Build outputs
+build/
+dist/
+out/
+.next/
+.serverless/
+.netlify/
+.cache/
+
+# User uploads (Exclude backend uploaded images)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# IDE and OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

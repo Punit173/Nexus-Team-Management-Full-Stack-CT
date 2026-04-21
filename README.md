@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# Nexus Team Management Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A premium, full-stack web application designed for organizing, managing, and viewing student team members. It features a hyper-modern geometric UI with glassmorphism aesthetics, powered by React on the frontend and Node.js/Express with MongoDB on the backend.
 
-## Available Scripts
+## Features
+- **Premium UI/UX:** Stunning Teal/Cyan glassmorphic design system using Tailwind CSS and Lucide React.
+- **Member Directory:** View all members presented in sleek, floating cards with dynamic gradients.
+- **Member Profiles:** Full detailed "dossier-style" profiles.
+- **Member Registration:** Add new team members with a clean drag-and-drop avatar uploader supporting local images.
+- **Responsive:** Fully responsive across desktop, tablet, and mobile platforms.
 
-In the project directory, you can run:
+## Technology Stack
+- **Frontend (Client):** React.js, Tailwind CSS, React Router DOM, Axios
+- **Backend (Server):** Node.js, Express.js, Multer (for multipart/form-data image uploads), Cors
+- **Database:** MongoDB via Mongoose ORM
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation Steps
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+If you are cloning or downloading this repository for the first time, follow these steps to install the necessary dependencies for both the client and server.
 
-### `npm test`
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd mgmt-application
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. **Install Backend Dependencies:**
+   ```bash
+   cd backend
+   npm install
+   ```
 
-### `npm run build`
+3. **Install Frontend Dependencies:**
+   ```bash
+   cd ../frontend
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. **Environment Setup:**
+   Ensure you have MongoDB installed and running locally, or replace the connection string in `backend/index.js` with your MongoDB Atlas URI. By default, it connects to: `mongodb://127.0.0.1:27017/student_mgmt`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## How to Run the App
 
-### `npm run eject`
+To run the application locally, you must start both the backend server and the frontend client simultaneously. Open two separate terminal windows or tabs.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 1. Start the Backend Server
+In your first terminal instance:
+```bash
+cd backend
+node index.js
+```
+*You should see a message confirming: `Server is running on port 5000` and `MongoDB connected successfully`.*
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 2. Start the Frontend Client
+In your second terminal instance:
+```bash
+cd frontend
+npm start
+```
+*The React app will compile and automatically launch in your default web browser at `http://localhost:3000`.*
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## API Endpoints
 
-## Learn More
+The backend Express server exposes the following RESTful API endpoints, allowing the frontend to communicate with the database.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| Base URL | `http://localhost:5000` |
+| --- | --- |
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 1. Get All Members
+- **URL:** `/api/members`
+- **Method:** `GET`
+- **Description:** Fetches all registered team members from the database.
+- **Response Payload:** `[ { _id, name, role, email, image, createdAt... }, ... ]`
 
-### Code Splitting
+### 2. Get Single Member
+- **URL:** `/api/members/:id`
+- **Method:** `GET`
+- **Description:** Fetches a specific team member by their unique database ID.
+- **Params:** `id` (MongoDB ObjectId)
+- **Response Payload:** `{ _id, name, role, email, image... }`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 3. Register New Member
+- **URL:** `/api/members`
+- **Method:** `POST`
+- **Description:** Creates a new team member and uploads their associated avatar image to the `/uploads` directory.
+- **Content-Type:** `multipart/form-data`
+- **Request Body Fields:**
+  - `name` (String, required)
+  - `role` (String, required)
+  - `email` (String, required)
+  - `image` (File object, required)
+- **Response:** `201 Created` with the saved entity data. No direct JSON payload is sent into the database for images; instead, the filename generated by Multer is stored into the DB string column `image`. 
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Note on Image Serving
+Images uploaded via the POST endpoint are statically served out of the `backend/uploads` folder. The frontend accesses these representations via URLs like: `http://localhost:5000/uploads/<filename>`.
